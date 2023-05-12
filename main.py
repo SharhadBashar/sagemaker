@@ -22,7 +22,7 @@ sagemaker_session = sagemaker.Session()
 role = 'arn:aws:iam::052845409385:role/AmazonSageMaker-ExecutionRole'
 
 #Build tar file with model data + inference code
-bashCommand = "tar -cvpzf model.tar.gz model.joblib inference.py deployment_script.sh requirements.txt"
+bashCommand = "tar -cvpzf model.tar.gz model.joblib inference.py deployment.sh requirements.txt"
 # bashCommand = "tar -cvpzf model.tar.gz model.joblib"
 process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
 output, error = process.communicate()
@@ -33,8 +33,7 @@ image_uri = sagemaker.image_uris.retrieve(
     region=region,
     version="1.2-1",
     py_version="py3",
-    instance_type='ml.m5.2xlarge',
-    sdk_version='3.9.16'
+    instance_type='ml.m5.2xlarge'
 )
 
 #Bucket for model artifacts
@@ -56,7 +55,7 @@ create_model_response = client.create_model(
             "Mode": "SingleModel",
             "ModelDataUrl": model_artifacts,
             "Environment": {'SAGEMAKER_SUBMIT_DIRECTORY': model_artifacts,
-                           'SAGEMAKER_PROGRAM': 'inference.py'} 
+                           'SAGEMAKER_PROGRAM': 'deployment.sh'} 
         }
     ],
     ExecutionRoleArn=role,
