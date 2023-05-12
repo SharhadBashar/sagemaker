@@ -22,7 +22,7 @@ sagemaker_session = sagemaker.Session()
 role = 'arn:aws:iam::052845409385:role/AmazonSageMaker-ExecutionRole'
 
 #Build tar file with model data + inference code
-bashCommand = "tar -cvpzf model.tar.gz model.joblib inference.py requirements.txt"
+bashCommand = "tar -cvpzf model.tar.gz model.joblib inference.py deployment_script.sh requirements.txt"
 # bashCommand = "tar -cvpzf model.tar.gz model.joblib"
 process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
 output, error = process.communicate()
